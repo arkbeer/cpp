@@ -1,5 +1,6 @@
 #include<iostream>
 #include<array>
+#include<complex>
 int main(){
     class vec3{
         std::array<double,3> e;
@@ -19,6 +20,20 @@ int main(){
         double operator[](int i) const{return e.at(i);}
         double& operator[](int i){return e.at(i);}
         
+        vec3& operator+=(const vec3& v2);
+        vec3& operator-=(const vec3& v2);
+        vec3& operator*=(const vec3& v2);
+        vec3& operator/=(const vec3& v2);
+        vec3& operator*=(const double t);
+        vec3& operator/=(const double t);
+        
+        const double length()const {
+            return std::sqrt(e.at(0)*e.at(0)+e.at(1)*e.at(1)+e.at(2)*e.at(2));
+        }
+        
     };
+    
+    vec3 v{{1,1,1}};
+    std::cout<<v.length()<<std::endl;
     return 0;
 }
