@@ -16,8 +16,8 @@ int main(){
         const vec3& operator-(){
             return vec3(std::array<double,3>{-e.at(0),-e.at(1),-e.at(2)});
         }
-        const vec3 operator[](int i){return e.at(i);}
-        vec3& operator[](int i){return e.at(i);}
+        double operator[](int i) const{return e.at(i);}
+        double& operator[](int i){return e.at(i);}
         
     };
     return 0;
