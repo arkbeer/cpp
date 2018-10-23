@@ -1,4 +1,5 @@
 #include"vec3.hpp"
+#include"ray.hpp"
 #include<fstream>
 std::ostream& make_header(std::ostream& ost,const int nx,const int ny,const int ncolor){
     ost<<"P3\n"<<nx<<" "<<ny<<"\n"<<ncolor<<std::endl;
