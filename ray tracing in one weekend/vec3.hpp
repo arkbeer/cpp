@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<array>
 #include<complex>
@@ -62,6 +63,7 @@ class vec3{
     friend vec3 operator*(const vec3&, const vec3&);
     friend vec3 operator/(const vec3&, const vec3&);
     friend vec3 operator*(const vec3&, const double);
+    friend vec3 operator*(const double, const vec3&);
     friend vec3 operator/(const vec3&, const double);
     double square_length()const{
         return e.at(0)*e.at(0)+e.at(1)*e.at(1)+e.at(2)*e.at(2);
@@ -94,6 +96,9 @@ vec3 operator/(const vec3& v1, const vec3& v2){
     return vec3{{v1.e.at(0)/v2.e.at(0),v1.e.at(1)/v2.e.at(1),v1.e.at(2)/v2.e.at(2)}};
 }
 vec3 operator*(const vec3& v1, const double t){
+    return vec3{{v1.e.at(0)*t,v1.e.at(1)*t,v1.e.at(2)*t}};
+}
+vec3 operator*(const double t, const vec3& v1){
     return vec3{{v1.e.at(0)*t,v1.e.at(1)*t,v1.e.at(2)*t}};
 }
 vec3 operator/(const vec3& v1, const double t){
