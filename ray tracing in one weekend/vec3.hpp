@@ -6,12 +6,12 @@ class vec3{
     public:
     vec3(const std::array<double,3>& _e):e(_e){}
     vec3():vec3({0,0,0}){}
-    const auto x(){return e.at(0);}
-    const auto y(){return e.at(1);}
-    const auto z(){return e.at(2);}
-    const auto r(){return e.at(0);}
-    const auto g(){return e.at(1);}
-    const auto b(){return e.at(2);}
+    const auto x()const {return e.at(0);}
+    const auto y()const {return e.at(1);}
+    const auto z()const {return e.at(2);}
+    const auto r()const {return static_cast<int>(255.99*e.at(0));}
+    const auto g()const {return static_cast<int>(255.99*e.at(1));}
+    const auto b()const {return static_cast<int>(255.99*e.at(2));}
     const vec3& operator+(){return *this;}
     const vec3 operator-(){
         return vec3{{-e.at(0),-e.at(1),-e.at(2)}};
@@ -74,7 +74,7 @@ class vec3{
     }
 };
 std::ostream& operator<<(std::ostream& os, const vec3& v){
-    os<<v.e.at(0)<<" "<<v.e.at(1)<<" "<<v.e.at(2);
+    os<<v.r()<<" "<<v.g()<<" "<<v.b();
     return os;
 }
 std::istream& operator>>(std::istream& is, vec3& v){
