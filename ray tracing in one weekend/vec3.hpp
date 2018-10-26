@@ -71,7 +71,7 @@ class vec3{
     double length()const {
         return std::sqrt(square_length());
     }
-    vec3 unit(){
+    const vec3 unit()const{
         return *this/length();
     }
 };
@@ -103,4 +103,9 @@ vec3 operator*(const double t, const vec3& v1){
 }
 vec3 operator/(const vec3& v1, const double t){
     return vec3{{v1.e.at(0)/t,v1.e.at(1)/t,v1.e.at(2)/t}};
+}
+const double dot(const vec3& v1, const vec3& v2){
+    const vec3 v=v1*v2;
+    return v.x()+v.y()+v.z();
+    
 }
