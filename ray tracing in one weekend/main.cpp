@@ -13,7 +13,7 @@ const vec3 random_in_unit_sphere(){
 }
 const vec3 color(const ray& r,hitable *world){
     hit_record rec;
-    if(world->hit(r,0.0,INT8_MAX,rec)){
+    if(world->hit(r,0.000001,INT8_MAX,rec)){
         vec3 target=rec.p+rec.normal+random_in_unit_sphere();
         return 0.5*color(ray(rec.p,target-rec.p),world);
     }else{
