@@ -10,6 +10,15 @@ namespace rayt{
             _b=static_cast<int>(_z*255.99);
         }
         ~vec3(){}
+                const float square()const{
+            return _x*_x+_y*_y+_z*_z;
+        }
+        const float length()const{
+            return std::sqrt(square());
+        }
+        const vec3 unit()const{
+            return *this/length();
+        }
 #define FUNC(TYPE, NAME, I) const TYPE NAME()const{return _##NAME;}
         FUNC(float, x, 0);
         FUNC(float, y, 1);
@@ -24,12 +33,20 @@ namespace rayt{
         FRIEND(*)
         FRIEND(/)
 #undef FRIEND
+#define FRIEND(OPENAME) friend vec3 operator OPENAME(const vec3&, const float&);
+        FRIEND(*)
+        FRIEND(/)
+#undef FRIEND
     };
 }
 
 #define FRIEND(OPENAME) rayt::vec3 operator OPENAME(const rayt::vec3& v1, const rayt::vec3& v2){return rayt::vec3(v1.x() OPENAME v2.x(), v1.y() OPENAME v2.y(), v1.z() OPENAME v2.z());}
 FRIEND(+)
 FRIEND(-)
+FRIEND(*)
+FRIEND(/)
+#undef FRIEND
+#define FRIEND(OPENAME) rayt::vec3 operator OPENAME(const rayt::vec3& v, const float t){return rayt::vec3(v.x() OPENAME t, v.y() OPENAME t, v.z() OPENAME t);}
 FRIEND(*)
 FRIEND(/)
 #undef FRIEND
