@@ -9,6 +9,7 @@ namespace rayt{
             _g=static_cast<int>(_y*255.99);
             _b=static_cast<int>(_z*255.99);
         }
+        vec3():vec3(0,0,0){}
         ~vec3(){}
                 const float square()const{
             return _x*_x+_y*_y+_z*_z;
