@@ -27,26 +27,28 @@ namespace rayt{
         FUNC(int, g, 4);
         FUNC(int, b, 5);
 #undef FUNC
-#define FRIEND(OPENAME) friend vec3 operator OPENAME(const vec3&, const vec3&);
-        FRIEND(+)
-        FRIEND(-)
-        FRIEND(*)
-        FRIEND(/)
-#undef FRIEND
-#define FRIEND(OPENAME) friend vec3 operator OPENAME(const vec3&, const float&);
-        FRIEND(*)
-        FRIEND(/)
-#undef FRIEND
+#define FRIEND_OPERATOR(OPENAME) friend vec3 operator OPENAME(const vec3&, const vec3&);
+        FRIEND_OPERATOR(+)
+        FRIEND_OPERATOR(-)
+        FRIEND_OPERATOR(*)
+        FRIEND_OPERATOR(/)
+#undef FRIEND_OPERATOR
+#define FRIEND_OPERATOR(OPENAME) friend vec3 operator OPENAME(const vec3&, const float);
+        FRIEND_OPERATOR(*)
+        FRIEND_OPERATOR(/)
+#undef FRIEND_OPERATOR
     };
+#define OPERATOR(OPENAME) vec3 operator OPENAME(const vec3& v1, const vec3& v2){return vec3(v1.x() OPENAME v2.x(), v1.y() OPENAME v2.y(), v1.z() OPENAME v2.z());}
+    OPERATOR(+)
+    OPERATOR(-)
+    OPERATOR(*)
+    OPERATOR(/)
+#undef OPERATOR
+#define OPERATOR(OPENAME) vec3 operator OPENAME(const vec3& v, const float t){return vec3(v.x() OPENAME t, v.y() OPENAME t, v.z() OPENAME t);}
+    OPERATOR(*)
+    OPERATOR(/)
+#undef OPERATOR
+#define OPERATOR(OPENAME) vec3 operator OPENAME(const float t, const vec3& v){return v*t;}
+    OPERATOR(*)
+#undef OPERATOR
 }
-
-#define FRIEND(OPENAME) rayt::vec3 operator OPENAME(const rayt::vec3& v1, const rayt::vec3& v2){return rayt::vec3(v1.x() OPENAME v2.x(), v1.y() OPENAME v2.y(), v1.z() OPENAME v2.z());}
-FRIEND(+)
-FRIEND(-)
-FRIEND(*)
-FRIEND(/)
-#undef FRIEND
-#define FRIEND(OPENAME) rayt::vec3 operator OPENAME(const rayt::vec3& v, const float t){return rayt::vec3(v.x() OPENAME t, v.y() OPENAME t, v.z() OPENAME t);}
-FRIEND(*)
-FRIEND(/)
-#undef FRIEND
