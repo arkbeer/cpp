@@ -4,9 +4,10 @@
 #include<complex>
 #include"vec3.hpp"
 #include"ray.hpp"
+#include"sphere.hpp"
 
 const rayt::vec3 center(0,0,-1);
-
+const rayt::sphere s(center, 0.5);
 const float hit_sphere(const rayt::vec3& center, const float radius, const rayt::ray& r){
     rayt::vec3 oc=r.origin()-center;
     const float a=dot(r.direction(), r.direction());
