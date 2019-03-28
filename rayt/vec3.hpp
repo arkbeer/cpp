@@ -2,13 +2,8 @@
 namespace rayt{
     class vec3{
         float _x,_y,_z;
-        int _r,_g,_b;
         public:
-        vec3(const float x, const float y, const float z):_x(x),_y(y),_z(z){
-            _r=static_cast<int>(_x*255.99);
-            _g=static_cast<int>(_y*255.99);
-            _b=static_cast<int>(_z*255.99);
-        }
+        vec3(const float x, const float y, const float z):_x(x),_y(y),_z(z){}
         vec3():vec3(0,0,0){}
         ~vec3(){}
                 const float square()const{
@@ -20,13 +15,15 @@ namespace rayt{
         const vec3 unit()const{
             return *this/length();
         }
-#define FUNC(TYPE, NAME, I) const TYPE NAME()const{return _##NAME;}
-        FUNC(float, x, 0);
-        FUNC(float, y, 1);
-        FUNC(float, z, 2);
-        FUNC(int, r, 3);
-        FUNC(int, g, 4);
-        FUNC(int, b, 5);
+#define FUNC(TYPE, NAME) const TYPE NAME()const{return _##NAME;}
+        FUNC(float, x);
+        FUNC(float, y);
+        FUNC(float, z);
+#undef FUNC
+#define FUNC(TYPE, NAME, COORD) const TYPE NAME()const{return static_cast<int>(_##COORD*255.99);}
+        FUNC(int, r, x);
+        FUNC(int, g, y);
+        FUNC(int, b, z);
 #undef FUNC
 #define FRIEND_OPERATOR(OPENAME) friend vec3 operator OPENAME(const vec3&, const vec3&);
         FRIEND_OPERATOR(+)
