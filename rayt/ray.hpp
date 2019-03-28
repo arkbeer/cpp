@@ -11,7 +11,7 @@ namespace rayt{
         FUNC(origin, a)
         FUNC(direction, b)
 #undef FUNC
-        const vec3 point_at_parameter(const float t){return _a+t*_b;}
+        const vec3 point_at_parameter(const float t)const{return _a+t*_b;}
 
     };
 }
