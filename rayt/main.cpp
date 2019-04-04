@@ -2,9 +2,16 @@
 #include<fstream>
 #include<array>
 #include<complex>
+#include<vector>
+#include<memory>
 #include"vec3.hpp"
 #include"ray.hpp"
 #include"sphere.hpp"
+class hitable_list{
+    public:
+    std::vector<std::unique_ptr<rayt::hitable>> list;
+
+};
 
 const rayt::vec3 center(0,0,-1);
 const rayt::sphere s(center, 0.5);
@@ -30,6 +37,9 @@ rayt::vec3 color(const rayt::ray& r){
 }
 
 int main(){
+    hitable_list li;
+    li.list.push_back(std::make_unique<rayt::sphere>(center, 0.5));
+    li.list.push_back(std::make_unique<rayt::sphere>(center, 0.5));
     const int nx=200;
     const int ny=100;
 
