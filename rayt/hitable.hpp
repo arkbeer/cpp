@@ -1,3 +1,4 @@
+#pragma once
 #include"vec3.hpp"
 #include"ray.hpp"
 namespace rayt{

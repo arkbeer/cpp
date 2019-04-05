@@ -1,3 +1,4 @@
+#pragma once
 #include"hitable.hpp"
 #include<complex>
 namespace rayt{

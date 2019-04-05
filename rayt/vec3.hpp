@@ -25,6 +25,14 @@ namespace rayt{
         FUNC(int, g, y);
         FUNC(int, b, z);
 #undef FUNC
+#define OPERATOR(OPENAME) vec3& operator OPENAME(const vec3& v){_x OPENAME v.x();_y OPENAME v.y();_z OPENAME v.z();return *this;}
+        OPERATOR(+=)
+        OPERATOR(-=)
+#undef OPERATOR
+#define OPERATOR(OPENAME) vec3& operator OPENAME(const float t){_x OPENAME t;_y OPENAME t;_z OPENAME t;return *this;}
+        OPERATOR(*=)
+        OPERATOR(/=)
+#undef OPERATOR
 #define FRIEND_OPERATOR(OPENAME) friend vec3 operator OPENAME(const vec3&, const vec3&);
         FRIEND_OPERATOR(+)
         FRIEND_OPERATOR(-)
