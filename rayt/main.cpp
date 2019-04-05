@@ -4,42 +4,43 @@
 #include<complex>
 #include<vector>
 #include<memory>
+#include<limits>
 #include"vec3.hpp"
 #include"ray.hpp"
 #include"sphere.hpp"
-class hitable_list{
-    public:
-    std::vector<std::unique_ptr<rayt::hitable>> list;
-
-};
-
-const rayt::vec3 center(0,0,-1);
-const rayt::sphere s(center, 0.5);
-const float hit_sphere(const rayt::vec3& center, const float radius, const rayt::ray& r){
-    rayt::vec3 oc=r.origin()-center;
-    const float a=dot(r.direction(), r.direction());
-    const float b=2.0*dot(r.direction(), oc);
-    const float c=dot(oc, oc)-radius*radius;
-    const float d=b*b-4*a*c;
-    if(d<0){
-        return -1;
-    }else return (-b-sqrt(d))/(2.0*a);
-}
-rayt::vec3 color(const rayt::ray& r){
-    float t=hit_sphere(center, 0.5 ,r);
-    if(t>0){
-        const rayt::vec3 N=(r.point_at_parameter(t)-center).unit();
-        return 0.5*rayt::vec3(N.x()+1,N.y()+1,N.z()+1);
+namespace rayt{
+    class hitable_list: public hitable{
+        public:
+        std::vector<std::shared_ptr<hitable>> list;
+        virtual bool hit(const ray& r, const float t_min, const float t_max, hitinfo& info)const;
+    };
+    bool hitable_list::hit(const ray& r, const float t_min, const float t_max, hitinfo& info)const{
+        hitinfo tmp;
+        bool hit_anything=false;
+        float closet_so_far=t_max;
+        for(const auto& v:list){
+            if(v->hit(r, t_min, closet_so_far, tmp)){
+                hit_anything=true;
+                closet_so_far=tmp.t;
+                info=tmp;
+            }
+        }
+        return hit_anything;
     }
-    const rayt::vec3 unit_direction=r.direction().unit();
-    t=0.5*(unit_direction.y()+1.0);
-    return (1.0-t)*rayt::vec3(1.0,1.0,1.0)+t*rayt::vec3(0.5,0.7,1.0);
+}
+
+rayt::vec3 color(const rayt::ray& r, const std::shared_ptr<rayt::hitable>& world){
+    rayt::hitinfo info;
+    if(world->hit(r, 0.0, std::numeric_limits<float>::max(), info)){
+        return 0.5*rayt::vec3(info.normal.x()+1, info.normal.y()+1, info.normal.z()+1);
+    }else{
+        const rayt::vec3 unit_direction=r.direction().unit();
+        float t=0.5*(unit_direction.y()+1.0);
+        return (1.0-t)*rayt::vec3(1.0,1.0,1.0)+t*rayt::vec3(0.5,0.7,1.0);
+    }
 }
 
 int main(){
-    hitable_list li;
-    li.list.push_back(std::make_unique<rayt::sphere>(center, 0.5));
-    li.list.push_back(std::make_unique<rayt::sphere>(center, 0.5));
     const int nx=200;
     const int ny=100;
 
@@ -48,6 +49,11 @@ int main(){
     rayt::vec3 vertical(0,2,0);
     rayt::vec3 origin(0,0,0);
 
+    const rayt::vec3 center(0,0,-1);
+    rayt::hitable_list li;
+    li.list.push_back(std::make_shared<rayt::sphere>(center, 0.5));
+    li.list.push_back(std::make_shared<rayt::sphere>(rayt::vec3(0,-100.5,-1), 100));
+    std::shared_ptr<rayt::hitable_list> world=std::make_shared<rayt::hitable_list>(li);
     std::ofstream ofs("data.ppm");
 
     ofs<<"P3\n"<<nx<<" "<<ny<<"\n255\n";
@@ -56,10 +62,9 @@ int main(){
             const float u=static_cast<float>(i)/nx;
             const float v=static_cast<float>(j)/ny;
             rayt::ray r(origin, lower_left_corner+u*horizontal+v*vertical);
-            rayt::vec3 col=color(r);
+            rayt::vec3 col=color(r,world);
             ofs<<col.r()<<" "<<col.g()<<" "<<col.b()<<"\n";
         }
-
     }
     return 0;
 }

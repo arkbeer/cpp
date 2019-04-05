@@ -17,16 +17,20 @@ namespace rayt{
         const float d=b*b-a*c;
         if(d>0){
             float t=(-b-std::sqrt(d))/a;
-            if(t<t_min || t_max<t){
-                t=(-b+std::sqrt(d))/a;
-            }
-            if(t_min<=t && t<=t_max){
+            if(t_min<t && t<t_max){
                 info.t=t;
-                info.p=r.point_at_parameter(t);
+                info.p=r.point_at_parameter(info.t);
                 info.normal=(info.p-_center)/_radius;
-
+                return true;
             }
-            return true;
-        }else return false;
+            t=(-b+std::sqrt(d))/a;
+            if(t_min<t && t<t_max){
+                info.t=t;
+                info.p=r.point_at_parameter(info.t);
+                info.normal=(info.p-_center)/_radius;
+                return true;
+            }
+        }
+        return false;
     }
 }
